@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Taylor">
+
+
+    <meta name="subtitle" content="知识使人丰满">
+
+
+
+    <meta name="keywords" content="kuberntes, docker, NLP, deeplearning, python">
+
+
+<title>关于体检报告数据NLP相关的工作 | TaylorHere</title>
+
+
+
+    <link rel="icon" href="/hexo-theme-Chic/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/hexo-theme-Chic/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/hexo-theme-Chic/js/script.js"></script>
+    
+    <script src="/hexo-theme-Chic/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/hexo-theme-Chic/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/archives">Posts</a>
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/category">Categories</a>
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/tag">Tags</a>
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/hexo-theme-Chic/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/archives">Posts</a>
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/category">Categories</a>
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/tag">Tags</a>
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">关于体检报告数据NLP相关的工作</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Taylor</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">November 14, 2019&nbsp;&nbsp;16:48:15</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h1><p>我现在所在公司主要业务是为用户提供体检报告, 我们拥有非常巨大的体检报告数据</p>
+<p>但是这些数据非常dirty, 部分数值类的检查项目, 如血糖结构是结构化的, 大部分数据都是混乱的纯文本</p>
+<p>我希望在这些报告数据上做点研究工作, 目前感兴趣的方向是对影像类体检项目的描述文本做三元组抽取</p>
+<h1 id="依存句法分析"><a href="#依存句法分析" class="headerlink" title="依存句法分析"></a>依存句法分析</h1><p>句法分析（syntactic parsing）是自然语言处理中的关键技术之一，它是对输入的文本句子进行分析以得到句子的句法结构的处理过程。对句法结构进行分析，一方面是语言理解的自身需求，句法分析是语言理解的重要一环，另一方面也为其它自然语言处理任务提供支持。例如句法驱动的统计机器翻译需要对源语言或目标语言（或者同时两种语言）进行句法分析；语义分析通常以句法分析的输出结果作为输入以便获得更多的指示信息。</p>
+<p>对于语料 <strong>“胰未发现明显异常双侧腋窝未见明显肿大淋巴结回声”</strong></p>
+<p>通过浅层句法分析可以得到以下结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">1  胰  胰  Ng  Ng  _  3  主谓关系  _  _</span><br><span class="line">2  未  未  d  d  _  3  状中结构  _  _</span><br><span class="line">3  发现  发现  v  v  _  0  核心关系  _  _</span><br><span class="line">4  明显  明显  a  ad  _  6  定中关系  _  _</span><br><span class="line">5  异常  异常  a  a  _  6  定中关系  _  _</span><br><span class="line">6  双侧  双侧  n  n  _  8  定中关系  _  _</span><br><span class="line">7  腋窝  腋窝  n  n  _  8  定中关系  _  _</span><br><span class="line">8  未见  未见  n  n  _  10  主谓关系  _  _</span><br><span class="line">9  明显  明显  a  ad  _  10  状中结构  _  _</span><br><span class="line">10  肿大  肿大  v  v  _  3  动宾关系  _  _</span><br><span class="line">11  淋巴结  淋巴结  n  n  _  12  定中关系  _  _</span><br><span class="line">12  回声  回声  n  n  _  10  动宾关系  _  _</span><br></pre></td></tr></table></figure>
+
+<p>可视化之后效果如下</p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g920hqkk6yj30tm03y75c.jpg" alt="image-20191114175026320"></p>
+<p>顺便贴一个可视化工具在这里:</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="http://spyysalo.github.io/conllu.js/">http://spyysalo.github.io/conllu.js/</a></li>
+</ul>
+<p>我们希望上述语料能得出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(胰, 未见, 异常)</span><br><span class="line">(双侧腋窝, 未见, 肿大淋巴结回声)</span><br></pre></td></tr></table></figure>
+
+<p>这样两个三元组</p>
+<p>通过简单的句法模版, 如以下原则</p>
+<ul>
+<li><p>核心词为动词, 与其成主谓关系的词被认为是key, 核心词是谓语, 成动宾关系的词为value</p>
+</li>
+<li><p>核心词为名词, 核心词提取为key, 与其呈并列关系的词提取为新key, 与其呈定中关系的词提取为value, 无谓语</p>
+</li>
+<li><p>核心词为形容词, 核心词提取为value, 与其呈主谓关系的词提取为key, 无谓语</p>
+</li>
+</ul>
+<p>在观察大量预料, 并对句法模版逐步调整后, 最终表现依然不尽人意, 几乎不能正确得出目标元组</p>
+<p>主要原因在于原始语料充满句法错误, 这导致对大段文本通过依存分析来提取元组成为了不可能的工作</p>
+<p>对于语料</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">胰未发现明显异常双侧腋窝未见明显肿大淋巴结回声</span><br></pre></td></tr></table></figure>
+
+<p>第一步应该区分出两个主语, 也就是要正确断句为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">胰未发现明显异常</span><br><span class="line">双侧腋窝未见明显肿大淋巴结回声</span><br></pre></td></tr></table></figure>
+
+<p>这样, 这份语料就能通过核心词为动词的模板成功分出元组</p>
+<p>如何正确分句, 第一步就是成功识别出部位名称等语义结构</p>
+<p>如果将语言序列拆分为义元序列, 那么这个问题就可以被看作是序列标注任务</p>
+<p>如: 胰(部位词)未发现(存在词)明显异常(异常词)</p>
+<h1 id="从语法分析到序列标注"><a href="#从语法分析到序列标注" class="headerlink" title="从语法分析到序列标注"></a>从语法分析到序列标注</h1><p>目前正在研究通过“双向长短期记忆条件随机场” 模型 Bi-LSTM-CRF, 将元组提取任务转化为序列标注任务</p>
+<p><img src="https://tva1.sinaimg.cn/large/006y8mN6gy1g920g8xf3mj30sg0dcmza.jpg" alt="image-20191118110219552"></p>
+<p>Bi-LSTM-CRF, 是一个双向LSTM, 加上一个CRF层, 这个网络模型中, 重点需要理解CRF的概念, 因为LSTM在这里其实是为CRF充当特征函数</p>
+<h1 id="Bi-LSTM-CRF"><a href="#Bi-LSTM-CRF" class="headerlink" title="Bi-LSTM-CRF"></a>Bi-LSTM-CRF</h1><h1 id="CRF"><a href="#CRF" class="headerlink" title="CRF"></a>CRF</h1><p>Key concepts:</p>
+<ul>
+<li>emission score: label预测在LSTM输出的得分</li>
+</ul>
+<p><img src="https://tva1.sinaimg.cn/large/0082zybpgy1gbr4kc3658j30bx0an75b.jpg" alt="image-20200210103620546"></p>
+<ul>
+<li>transition score: label之间迁移的得分</li>
+</ul>
+<p>emission score 和 transition score构成了CRF</p>
+<p>其中 emission score是 CRF的输入</p>
+<p>transition score构成的状态转移矩阵就是CRF需要学习的参数</p>
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left">START</th>
+<th align="left">B-Person</th>
+<th align="left">I-Person</th>
+<th align="left">B-Organization</th>
+<th align="left">I-Organization</th>
+<th align="left">O</th>
+<th align="left">END</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">START</td>
+<td align="left">0</td>
+<td align="left">0.8</td>
+<td align="left">0.007</td>
+<td align="left">0.7</td>
+<td align="left">0.0008</td>
+<td align="left">0.9</td>
+<td align="left">0.08</td>
+</tr>
+<tr>
+<td align="left">B-Person</td>
+<td align="left">0</td>
+<td align="left">0.6</td>
+<td align="left">0.9</td>
+<td align="left">0.2</td>
+<td align="left">0.0006</td>
+<td align="left">0.6</td>
+<td align="left">0.009</td>
+</tr>
+<tr>
+<td align="left">I-Person</td>
+<td align="left">-1</td>
+<td align="left">0.5</td>
+<td align="left">0.53</td>
+<td align="left">0.55</td>
+<td align="left">0.0003</td>
+<td align="left">0.85</td>
+<td align="left">0.008</td>
+</tr>
+<tr>
+<td align="left">B-Organization</td>
+<td align="left">0.9</td>
+<td align="left">0.5</td>
+<td align="left">0.0003</td>
+<td align="left">0.25</td>
+<td align="left">0.8</td>
+<td align="left">0.77</td>
+<td align="left">0.006</td>
+</tr>
+<tr>
+<td align="left">I-Organization</td>
+<td align="left">-0.9</td>
+<td align="left">0.45</td>
+<td align="left">0.007</td>
+<td align="left">0.7</td>
+<td align="left">0.65</td>
+<td align="left">0.76</td>
+<td align="left">0.2</td>
+</tr>
+<tr>
+<td align="left">O</td>
+<td align="left">0</td>
+<td align="left">0.65</td>
+<td align="left">0.0007</td>
+<td align="left">0.7</td>
+<td align="left">0.0008</td>
+<td align="left">0.9</td>
+<td align="left">0.08</td>
+</tr>
+<tr>
+<td align="left">END</td>
+<td align="left">0.9</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+<td align="left">0</td>
+</tr>
+</tbody></table>
+<p>状态转移矩阵也就是CRF所能学习到的“约束规则”</p>
+<p>emission score 在“经过”transition matrix之后得出的score便是最终标签得分</p>
+<p>这里的经过就是一个寻路算法 维特比(<strong>Viterbi</strong>)算法、A*也可以的</p>
+<p>上面就是<strong>BiLSTM-CRF</strong>的大概</p>
+<p>下面慢慢讨论 BiLSTM-CRF的结构、Loss Function、BP、Inference</p>
+<p>一下是一个TensorFlow2版本的BiLSTM-CRF模型结构</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Model: &quot;ner<span class="built_in">_</span>model<span class="built_in">_</span>7&quot;</span><br><span class="line"><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span></span><br><span class="line">Layer (type)                 Output Shape              Param <span class="params">#</span>   </span><br><span class="line">=================================================================</span><br><span class="line">embedding<span class="built_in">_</span>19 (Embedding)     multiple                  10000     </span><br><span class="line"><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span></span><br><span class="line">bidirectional<span class="built_in">_</span>30 (Bidirectio multiple                  8880      </span><br><span class="line"><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span></span><br><span class="line">dense<span class="built_in">_</span>7 (Dense)              multiple                  2100      </span><br><span class="line"><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span></span><br><span class="line">dropout<span class="built_in">_</span>7 (Dropout)          multiple                  0         </span><br><span class="line">=================================================================</span><br><span class="line">Total params: 30,980</span><br><span class="line">Trainable params: 20,980</span><br><span class="line">Non-trainable params: 10,000</span><br><span class="line"><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span><span class="built_in">_</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+<h1 id="语元"><a href="#语元" class="headerlink" title="语元"></a>语元</h1><p>纤维条索影: 症状</p>
+<p>肺大泡: 部位</p>
+<p>胸膜: 部位</p>
+<p>增厚: 症状</p>
+<p>粘连: 症状</p>
+<p>纵隔: 部位</p>
+<p>淋巴结: 部位</p>
+<p>钙化: 症状</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Taylor</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://taylorhere.github.io/2019/11/14/%E5%85%B3%E4%BA%8E%E4%BD%93%E6%A3%80%E6%8A%A5%E5%91%8A%E6%95%B0%E6%8D%AENLP%E7%9B%B8%E5%85%B3%E7%9A%84%E5%B7%A5%E4%BD%9C/">https://taylorhere.github.io/2019/11/14/%E5%85%B3%E4%BA%8E%E4%BD%93%E6%A3%80%E6%8A%A5%E5%91%8A%E6%95%B0%E6%8D%AENLP%E7%9B%B8%E5%85%B3%E7%9A%84%E5%B7%A5%E4%BD%9C/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/hexo-theme-Chic/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/hexo-theme-Chic/2019/11/25/%E5%A6%82%E4%BD%95%E5%81%9A%E5%A5%BD%E6%8A%AB%E8%90%A8%E7%9A%AE/">如何做好披萨皮</a>
+            
+            
+            <a class="next" rel="next" href="/hexo-theme-Chic/2019/11/14/%E6%99%9A%E5%AE%89%E7%94%B5%E5%8F%B0%E5%BC%80%E5%8F%91%E6%80%9D%E8%B7%AF%E8%AE%B0%E5%BD%95/">晚安电台开发思路记录</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Taylor | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

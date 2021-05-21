@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Taylor">
+
+
+    <meta name="subtitle" content="知识使人丰满">
+
+
+
+    <meta name="keywords" content="kuberntes, docker, NLP, deeplearning, python">
+
+
+<title>CLRS-solutions-codes | TaylorHere</title>
+
+
+
+    <link rel="icon" href="/hexo-theme-Chic/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/hexo-theme-Chic/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/hexo-theme-Chic/js/script.js"></script>
+    
+    <script src="/hexo-theme-Chic/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+            <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+        
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/hexo-theme-Chic/">Bentham&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/archives">Posts</a>
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/category">Categories</a>
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/tag">Tags</a>
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/hexo-theme-Chic/">Bentham&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/archives">Posts</a>
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/category">Categories</a>
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/tag">Tags</a>
+                
+                    <a class="menu-item" href="/hexo-theme-Chic/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">CLRS-solutions-codes</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Taylor</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">June 5, 2020&nbsp;&nbsp;6:32:00</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="CLRS-solutions-codes"><a href="#CLRS-solutions-codes" class="headerlink" title="CLRS-solutions-codes"></a>CLRS-solutions-codes</h1><h2 id="README"><a href="#README" class="headerlink" title="README"></a>README</h2><p>In this blog,  I’ll post solutions and my python codes of <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Introduction_to_Algorithms">CLRS</a></p>
+<p>I cant ensure the solutions and my codes are perfectly right, so you may want to google more solutions and codes to ensure that.</p>
+<p>thx for <a target="_blank" rel="noopener" href="https://walkccc.github.io/CLRS/">this project</a>, which gives me many ideas, so you may find the solution is almost the same, if they cant help you in solutions, I cant help you either, but I’ll append as more details in solutions as I can.</p>
+<p>I’ll rewrite all procedure to python codes, includeing the procedure in the book, and make sure  all of my python codes can run correctly.</p>
+<p>hopes this blog can help you in a way.</p>
+<h2 id="1-2-2"><a href="#1-2-2" class="headerlink" title="1.2-2"></a>1.2-2</h2><p>Suppose we are comparing implementations of insertion sort and merge sort on the same machine. For inputs of size n , insertion sort runs in $8n^2$ steps, while merge sort runs in  $64nlog_{2}n$ steps. For which values of n does insertion sort beat merge sort?<br>$$<br>8n^2 &lt; 64nlog_{10}n \\<br>n &lt; 8log_{2}n \\<br>log_{2}n = ? \leftrightarrow 2^?= n \\<br>2^\frac{n}{8} &lt; 2^{log_{2}n} \\<br>2^\frac{n}{8} &lt; n \\<br>\sqrt[8]{2^n} &lt; n  \\<br>2^n &lt; n^8 \\<br>2 \le n \le 43<br>$$</p>
+<h2 id="1-2-3"><a href="#1-2-3" class="headerlink" title="1.2-3"></a>1.2-3</h2><p>What is the smallest value of n such that an algorithm whose running time is $100n^2$ runs faster than an algorithm whose running time is $2^n$ on the same machine?<br>$$<br>100n^2 &lt; 2^n \\<br>n \ge 15<br>$$</p>
+<h2 id="1-1"><a href="#1-1" class="headerlink" title="1-1"></a>1-1</h2><p>Don’t wanna do it. so I draw a picture in <a target="_blank" rel="noopener" href="https://www.goldensoftware.com/products/grapher">Grapher</a></p>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th>1s</th>
+<th>1m</th>
+<th>1h</th>
+<th>1d</th>
+<th>1mon</th>
+<th>1y</th>
+<th>1c</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">$log_2n$</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">$\sqrt{n}$</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">$n$</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">$nlog_2n$</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">$n^2$</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">$n^3$</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">$2^n$</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td align="center">$n!$</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gffqvxkpx8j319w0sajue.jpg" alt="cavs"></p>
+<h1 id="2"><a href="#2" class="headerlink" title="2"></a>2</h1><h2 id="2-1"><a href="#2-1" class="headerlink" title="2.1"></a>2.1</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insertion_sort</span>(<span class="params">A: <span class="built_in">list</span></span>) -&gt; <span class="built_in">list</span>:</span></span><br><span class="line">  <span class="keyword">for</span> j, key <span class="keyword">in</span> <span class="built_in">enumerate</span>(A):</span><br><span class="line">    i = j -<span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> i&gt;=<span class="number">0</span> <span class="keyword">and</span> A[i] &gt; key:</span><br><span class="line">      A[i+<span class="number">1</span>] = A[i]</span><br><span class="line">      i = i-<span class="number">1</span></span><br><span class="line">    A[i+<span class="number">1</span>] = key</span><br><span class="line">  <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-1-1"><a href="#2-1-1" class="headerlink" title="2.1-1"></a>2.1-1</h2><p>Using Figure 2.2 as a model, illustrate the operation of INSERTION-SORTINSERTION-SORT on the array A=⟨31,41,59,26,41,58⟩<em>A</em>=⟨31,41,59,26,41,58⟩.</p>
+<p>A = [31, 41, 59, 26, 41, 58]</p>
+<p>A = [31, 41, 59, 26, 41, 58]</p>
+<p>A = [31, 41, 59, 26, 41, 58]</p>
+<p>A = [26, 31, 41, 59, 41, 58]</p>
+<p>A = [26, 31, 41, 41,59,  58]</p>
+<p>A = [26, 31, 41, 41, 58, 59]</p>
+<h2 id="2-1-2"><a href="#2-1-2" class="headerlink" title="2.1-2"></a>2.1-2</h2><p>Rewrite the INSERTION-SORTINSERTION-SORT procedure to sort into nonincreasing instead of nondecreasing order.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insertion_sort</span>(<span class="params">A: <span class="built_in">list</span></span>) -&gt; <span class="built_in">list</span>:</span></span><br><span class="line">  <span class="keyword">for</span> j, key <span class="keyword">in</span> <span class="built_in">enumerate</span>(A):</span><br><span class="line">    i = j -<span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> i&gt;=<span class="number">0</span> <span class="keyword">and</span> A[i] &lt; key:</span><br><span class="line">      A[i+<span class="number">1</span>] = A[i]</span><br><span class="line">      i = i-<span class="number">1</span></span><br><span class="line">    A[i+<span class="number">1</span>] = key</span><br><span class="line">  <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-1-3"><a href="#2-1-3" class="headerlink" title="2.1.-3"></a>2.1.-3</h2><p>Consider the *<strong>searching problem*</strong>:</p>
+<p><strong>Input</strong>: A sequence of n numbers A=⟨a1,a2,…,an⟩<em>A</em>=⟨<em>a</em>1,<em>a</em>2,…,<em>a</em>⟩ and a value v.</p>
+<p><strong>Output:</strong> An index i such that v=A[i]<em>v</em>=<em>A</em>[<em>i</em>] or the special value NILNIL if v does not appear in A.</p>
+<p>Write pseudocode for <em><strong>linear search*</strong>, which scans through the sequence, looking for v</em>v*. Using a loop invariant, prove that your algorithm is correct. Make sure that your loop invariant fulfills the three necessary properties.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">linear_search</span>(<span class="params">A:<span class="built_in">list</span>, v</span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">  <span class="keyword">for</span> i, key <span class="keyword">in</span> <span class="built_in">enumerate</span>(A):</span><br><span class="line">    <span class="keyword">if</span> v == key:</span><br><span class="line">      <span class="keyword">return</span> i</span><br><span class="line">  <span class="keyword">return</span> <span class="string">&#x27;nil&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Loop invariant:</strong> At the start of each iteration of the <strong>for</strong> loop, the subarray A[1..i] consists of elements that are different than <em>v</em>.</p>
+<p><strong>Initialization</strong>: before the <strong>for</strong> loop, key holds noting, and array is not empty, subarray is empty so the proof is trivial.</p>
+<p><strong>Maintenance</strong>: During each loop, we we compare v with key, if they are the same, we return i, which is the correct result, otherwise , we continue to the next iteration, at the end of each loop, we know the subarray A[1..i] does not contain v,  so the loop invariant holds true, incrementing i for the next iteration of the <strong>for</strong> loop preserves the loop invariant.</p>
+<p><strong>Termination</strong>: the loop terminated when elements has compared with v, and we found a element equal to v,  or every elements has compared with v, and i equals to len(A) -1, in the other way, the elements in subarray are different than v, thus we return ’nil’, then we conclude that the entire array does not have any element equal to v. Hence the algorithm is correct.</p>
+<p>2.1-4</p>
+<p>Consider the problem of adding two n<em>n</em>-bit binary integers, stored in two n<em>n</em>-element arrays A and B. The sum of the two integers should be stored in binary form in an n+1 element array C. State the problem formally and write pseudocode for adding the two integers.</p>
+<p><strong>Input:</strong> An array of booleans A=⟨a1,a2,…,an⟩ and an array of booleans B=⟨b1,b2,…,bn⟩, each representing an integer stored in binary format and each of length <em>n</em>.</p>
+<p><strong>Output:</strong> An array C=⟨c1,c2,…,cn+1⟩ such that C′=A′+B′ where A′ B′ and C′ are the integers, represented by A, B and C.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add_binary</span>(<span class="params">A:<span class="built_in">list</span>, B:<span class="built_in">list</span></span>) -&gt; <span class="built_in">list</span>:</span></span><br><span class="line">  C = [<span class="number">0</span> <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(A))]</span><br><span class="line">  carry = <span class="number">0</span></span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(A)-<span class="number">1</span>, <span class="number">0</span>, -<span class="number">1</span>):</span><br><span class="line">    C[i] = (A[i] + B[i] + carry) % <span class="number">2</span></span><br><span class="line">    carry = <span class="built_in">int</span>((A[i] + B[i] + carry) / <span class="number">2</span>)</span><br><span class="line">  C[<span class="number">0</span>] = (carry)</span><br><span class="line">  <span class="keyword">return</span> C</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-2"><a href="#2-2" class="headerlink" title="2.2"></a>2.2</h2><h2 id="2-2-1"><a href="#2-2-1" class="headerlink" title="2.2-1"></a>2.2-1</h2><p>Express the function $n3/1000−100n2−100n+3n$ in terms of Θ-notation.<br>$$<br>Θ(n^3)<br>$$</p>
+<h2 id="2-2-2"><a href="#2-2-2" class="headerlink" title="2.2-2"></a>2.2-2</h2><p>Consider sorting <em>n</em> numbers stored in array <em>A</em> by first finding the smallest element of <em>A</em> and exchanging it with the element in <em>A</em>[1]. Then find the second smallest element of <em>A</em>, and exchange it with <em>A</em>[2]. Continue in this manner for the first <em>n</em>−1 elements of <em>A</em>. Write pseudocode for this algorithm, which is known as *<strong>selection sort*</strong>. What loop invariant does this algorithm maintain? Why does it need to run for only the first <em>n</em>−1 elements, rather than for all <em>n</em> elements? Give the best-case and worst-case running times of selection sort in Θ-notation.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">selection_sort</span>(<span class="params">A: <span class="built_in">list</span></span>) -&gt; <span class="built_in">list</span>:</span></span><br><span class="line">  n = <span class="built_in">len</span>(A)</span><br><span class="line">  <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(n-<span class="number">1</span>):</span><br><span class="line">    min_index = i</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i+<span class="number">1</span>, n):</span><br><span class="line">      <span class="keyword">if</span> A[j] &lt; A[min_index]:</span><br><span class="line">        min_index = j</span><br><span class="line">    A[i], A[min_index] = A[min_index], A[i]</span><br><span class="line">  <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure>
+
+<p><strong>Loop Invariant</strong> :  At the every turns of the first <strong>for</strong> loop, the subarray A[1…n-1] contains of the smallest i-1 elements in array A with sorted order</p>
+<p><strong>Why n-1?</strong>:  After n-1 iterrations ,A[n] is already the biggest element.</p>
+<p><strong>Running consume</strong>:</p>
+<p>line by line cost and times:</p>
+<table>
+<thead>
+<tr>
+<th>num</th>
+<th>cost</th>
+<th>time</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>3</td>
+<td>$c_1$</td>
+<td>$n$</td>
+</tr>
+<tr>
+<td>4</td>
+<td>$c_2$</td>
+<td>$n-1$</td>
+</tr>
+<tr>
+<td>5</td>
+<td>$c_3$</td>
+<td>$\sum_{i=0}^{n-1}t_j$</td>
+</tr>
+<tr>
+<td>6</td>
+<td>$c_4$</td>
+<td>$\sum_{i=0}^{n-1}(t_j-1)$</td>
+</tr>
+<tr>
+<td>7</td>
+<td>$c_5$</td>
+<td>$\sum_{i=0}^{n-1}(t_j-1)$</td>
+</tr>
+<tr>
+<td>8</td>
+<td>$c_6$</td>
+<td>$n-1$</td>
+</tr>
+</tbody></table>
+<p>$$<br>T(n) = c_1 * n + c_2 * (n-1) + c_3 \sum_{i=0}^{n-1}t_j + c_4 \sum_{i=0}^{n-1}(t_j-1) + c_5 \sum_{i=0}^{n-1}(t_j-1) + c_6 (n-1)<br>$$</p>
+<p><strong>Best case</strong>:</p>
+<p>A is already sorted in nondecreasing order</p>
+<p><strong>Worst case</strong>:</p>
+<p>A is sorted in nonincreasing order</p>
+<p>in both cases<br>$$<br>t_j = n-i \\<br>\sum_{i=0}^{n-1}n-i = n^2-n-\frac{n\left(n-1\right)}{2} \\<br>\sum_{i=0}^{n-1}(n-i-1) = n^2-\frac{n\left(n-1\right)}{2} \\<br>$$<br>So<br>$$<br>T(n) = c_1 * n + c_2 * (n-1) + c_3 (n^2-n-\frac{n\left(n-1\right)}{2} )+ c_4 (n^2-\frac{n\left(n-1\right)}{2}) + c_5 (n^2-\frac{n\left(n-1\right)}{2}) + c_6 (n-1)<br>$$<br>Remove all Constant<br>$$<br>T(n) = n + (n-1) + n^2-n-\frac{n\left(n-1\right)}{2} +n^2-\frac{n\left(n-1\right)}{2} + n^2-\frac{n\left(n-1\right)}{2} +  (n-1)<br>$$<br>Thus time consume is<br>$$<br>\Theta(n^2)<br>$$</p>
+<h2 id="2-2-3"><a href="#2-2-3" class="headerlink" title="2.2-3"></a>2.2-3</h2><p>Consider linear search again (see Exercise 2.1-3). How many elements of the in- put sequence need to be checked on the average, assuming that the element being searched for is equally likely to be any element in the array? How about in the worst case? What are the average-case and worst-case running times of linear search in Θ-notation? Justify your answers.</p>
+<p>if we ignore the satiation that we cant found, in average, we will checks<br>$$<br>\frac{1+2+3+4+…+n}{n} = \frac{n+1}{2}<br>$$<br>The best case is the first element is the v we needed, The worst case is the last element is the v we needed, in both cases they are $\Theta(n)$</p>
+<h2 id="2-2-4"><a href="#2-2-4" class="headerlink" title="2.2-4"></a>2.2-4</h2><p>How can we modify almost any algorithm to have a good best-case running time?</p>
+<p>Modify the input to fit the best case for the special algorithm (lol.)</p>
+<h2 id="2-3"><a href="#2-3" class="headerlink" title="2.3"></a>2.3</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span>(<span class="params">A: <span class="built_in">list</span>, p: <span class="built_in">int</span>, q: <span class="built_in">int</span>, r: <span class="built_in">int</span></span>):</span></span><br><span class="line">  L = A[p:q+<span class="number">1</span>]</span><br><span class="line">  R = A[q+<span class="number">1</span>:r+<span class="number">1</span>]</span><br><span class="line">  L.append(<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>))</span><br><span class="line">  R.append(<span class="built_in">float</span>(<span class="string">&#x27;inf&#x27;</span>))</span><br><span class="line">  i = <span class="number">0</span></span><br><span class="line">  j = <span class="number">0</span></span><br><span class="line">  <span class="built_in">print</span>(L, R)</span><br><span class="line">  <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(p, r+<span class="number">1</span>):</span><br><span class="line">    <span class="keyword">if</span> L[i] &lt;= R[j]:</span><br><span class="line">      A[k] = L[i]</span><br><span class="line">      i += <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">      A[k] = R[j]</span><br><span class="line">      j += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_sort</span>(<span class="params">A: <span class="built_in">list</span>, p: <span class="built_in">int</span>, r: <span class="built_in">int</span></span>) -&gt; <span class="built_in">list</span> :</span></span><br><span class="line">  <span class="comment">#in python array starts at 0, pls input p at 0, and r = len(A) -1</span></span><br><span class="line">  <span class="keyword">if</span> r &gt; p:</span><br><span class="line">    q = (p+r)//<span class="number">2</span></span><br><span class="line">    merge_sort(A, p, q)</span><br><span class="line">    merge_sort(A, q+<span class="number">1</span>, r)</span><br><span class="line">    merge(A, p, q, r)</span><br><span class="line">  <span class="keyword">return</span> A</span><br><span class="line"></span><br><span class="line">A = [<span class="number">10</span>,<span class="number">9</span>,<span class="number">8</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>]</span><br><span class="line">merge_sort(A, <span class="number">0</span>, <span class="built_in">len</span>(A)-<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-1"><a href="#2-3-1" class="headerlink" title="2.3-1"></a>2.3-1</h2><p>Using Figure 2.4 as a model, illustrate the operation of merge sort on the array A=⟨3,41,52,26,38,57,9,49⟩<br>$$<br>[3], [41], [52], [26], [38], [57], [9], [49] \\<br>\downarrow \\<br>[3, 41], [26, 52], [38,57], [9, 49] \\<br>\downarrow \\<br>[3,26,41,52], [9,38,49,57] \\<br>\downarrow \\<br>[3, 9, 26, 38, 41, 49, 52, 57]<br>$$</p>
+<h2 id="2-3-2"><a href="#2-3-2" class="headerlink" title="2.3-2"></a>2.3-2</h2><p>Rewrite the MERGE procedure so that it does not use sentinels, instead stopping once either array L or R has had all its elements copied back to A and then copying the remainder of the other array back into A.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge</span>(<span class="params">A: <span class="built_in">list</span>, p: <span class="built_in">int</span>, q: <span class="built_in">int</span>, r: <span class="built_in">int</span></span>):</span></span><br><span class="line">  L = A[p:q+<span class="number">1</span>]</span><br><span class="line">  R = A[q+<span class="number">1</span>:r+<span class="number">1</span>]</span><br><span class="line">  i = <span class="number">0</span></span><br><span class="line">  j = <span class="number">0</span></span><br><span class="line">  <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(p, r+<span class="number">1</span>):</span><br><span class="line">    <span class="keyword">if</span> i &gt; <span class="built_in">len</span>(L) - <span class="number">1</span>:</span><br><span class="line">      A[k] = R[j]</span><br><span class="line">      j += <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> j &gt; <span class="built_in">len</span>(R) - <span class="number">1</span>:</span><br><span class="line">      A[k] = L[i]</span><br><span class="line">      i += <span class="number">1</span></span><br><span class="line">    <span class="keyword">elif</span> L[i] &lt;= R[j]:</span><br><span class="line">      A[k] = L[i]</span><br><span class="line">      i += <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">      A[k] = R[j]</span><br><span class="line">      j += <span class="number">1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-3-3"><a href="#2-3-3" class="headerlink" title="2.3-3"></a>2.3-3</h2><p>Use mathematical induction to show that when n<em>n</em> is an exact power of 2, the solution of the recurrence<br>$$<br>T(n) =<br>\begin{cases}<br>2,  &amp; \text{if n = 2}, \<br>2T(n/2)+n, &amp; \text{if n = 2^k, for k&gt; 1}<br>\end{cases}<br>$$</p>
+<p>Is $T(n)=nlog_2n$</p>
+<p>For $n=2^1, T(n)=2=2log_22$</p>
+<p>Suppose $n = 2^k, T(n)=nlog_2n=2^klog_2{2^k}=2^kk$</p>
+<p>For $n=2^{k+1}$,<br>$$<br>\begin{equation} \label{eq1}<br>\begin{split}<br>T(n) &amp; = 2T(2^{k+1}/2)+2^{k+1}  \<br> &amp; = 2T(2^k)+2^{k+1} \<br> &amp; = 2*2^kk + 2^{k+1} \<br> &amp; = 2^{k+1}(k+1) \<br> &amp; = 2^{k+1}log_2{2^{k+1}} \<br> &amp; = nlog_2n<br>\end{split}<br>\end{equation}<br>$$<br>By the Principle of M.I, we can say,</p>
+<p>$T(n) = nlog_2n$, when n is an exact power of 2.</p>
+<h2 id="2-3-4"><a href="#2-3-4" class="headerlink" title="2.3-4"></a>2.3-4</h2><p>We can express insertion sort as a recursive procedure as follows. In order to sort A[1..n], we recursively sort A[1..n−1] and then insert A[n]into the sorted array A[1..n−1]. Write a recurrence for the running time of this recursive version of insertion sort.</p>
+<p>$$<br>T(n) =<br>\begin{cases}<br>\Theta(1),  &amp; \text{if n = 1}, \<br>T(n-1)+\Theta(n), &amp; \text{if n &gt;1.}<br>\end{cases}<br>$$</p>
+<h2 id="2-3-5"><a href="#2-3-5" class="headerlink" title="2.3-5"></a>2.3-5</h2><p>Referring back to the searching problem (see Exercise 2.1-3), observe that if the sequence A is sorted, we can check the midpoint of the sequence against v and eliminate half of the sequence from further consideration. The *<strong>binary search*</strong> algorithm repeats this procedure, halving the size of the remaining portion of the sequence each time. Write pseudocode, either iterative or recursive, for binary search. Argue that the worst-case running time of binary search is Θ(lg⁡n).</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">iterative_binary_search</span>(<span class="params">A, v, mid</span>):</span></span><br><span class="line">	<span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">recursive_binary_search</span>(<span class="params">A, v, mid=<span class="literal">None</span></span>):</span></span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> mid:</span><br><span class="line">	  mid = <span class="built_in">len</span>(A)//<span class="number">2</span></span><br><span class="line">  <span class="keyword">if</span> mid == <span class="number">0</span> <span class="keyword">or</span> mid &gt;= <span class="built_in">len</span>(A):</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;nil&#x27;</span></span><br><span class="line">  <span class="keyword">if</span> A[mid] == v:</span><br><span class="line">    <span class="keyword">return</span> mid</span><br><span class="line">  <span class="keyword">if</span> A[mid] &gt; v:</span><br><span class="line">    mid = <span class="built_in">len</span>(A[:mid])//<span class="number">2</span></span><br><span class="line">    <span class="keyword">return</span> recursive_binary_search(A, v, mid)</span><br><span class="line">  <span class="keyword">if</span> A[mid] &lt; v:</span><br><span class="line">    mid = <span class="built_in">len</span>(A[mid:])//<span class="number">2</span> + mid</span><br><span class="line">    <span class="keyword">return</span> recursive_binary_search(A, v, mid)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Taylor</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://taylorhere.github.io/2020/06/05/CLRS-solutions-codes/">https://taylorhere.github.io/2020/06/05/CLRS-solutions-codes/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/hexo-theme-Chic/tags/clrs/"># clrs</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/hexo-theme-Chic/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/hexo-theme-Chic/2020/10/21/%E4%B8%80%E4%B8%AA%E5%BF%AB%E9%80%9F%E7%9A%84%E5%8A%9E%E6%B3%95%E5%AF%B9kubernetes%E9%9B%86%E7%BE%A4%E4%B8%AD%E7%9A%84Pod%E8%BF%9B%E8%A1%8C%E6%8A%93%E5%8C%85%E5%88%86%E6%9E%90/">一个快速的办法对kubernetes集群中的Pod进行抓包分析</a>
+            
+            
+            <a class="next" rel="next" href="/hexo-theme-Chic/2020/02/18/argo-eci/">在你的argo workflow上实现自动分配GPU节点进行深度学习训练任务</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Taylor | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
