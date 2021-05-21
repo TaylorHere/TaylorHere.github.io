@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Taylor">
+
+
+    <meta name="subtitle" content="知识使人丰满">
+
+
+
+    <meta name="keywords" content="kuberntes, docker, NLP, deeplearning, python">
+
+
+<title>一个快速的办法对kubernetes集群中的Pod进行抓包分析 | TaylorHere</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        <!-- MathJax配置，可通过单美元符号书写行内公式等 -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    "HTML-CSS": {
+        preferredFont: "TeX",
+        availableFonts: ["STIX","TeX"],
+        linebreaks: { automatic:true },
+        EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50)
+    },
+    tex2jax: {
+        inlineMath: [ ["$", "$"], ["\\(","\\)"] ],
+        processEscapes: true,
+        ignoreClass: "tex2jax_ignore|dno",
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+        equationNumbers: { autoNumber: "AMS" },
+        noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } },
+        Macros: { href: "{}" }
+    },
+    messageStyle: "none"
+    });
+</script>
+<!-- 给MathJax元素添加has-jax class -->
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<!-- 通过连接CDN加载MathJax的js代码 -->
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+    
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">TaylorHere</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">TaylorHere</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">一个快速的办法对kubernetes集群中的Pod进行抓包分析</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Taylor</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">October 21, 2020&nbsp;&nbsp;0:59:03</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="一个快速的办法对kubernetes集群中的Pod进行抓包分析"><a href="#一个快速的办法对kubernetes集群中的Pod进行抓包分析" class="headerlink" title="一个快速的办法对kubernetes集群中的Pod进行抓包分析"></a>一个快速的办法对kubernetes集群中的Pod进行抓包分析</h1><p>为你的kubectl安装plugin manager</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/kubernetes-sigs/krew">krew</a></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(</span><br><span class="line">  <span class="built_in">set</span> -x; <span class="built_in">cd</span> <span class="string">&quot;<span class="subst">$(mktemp -d)</span>&quot;</span> &amp;&amp;</span><br><span class="line">  curl -fsSLO <span class="string">&quot;https://github.com/kubernetes-sigs/krew/releases/latest/download/krew.tar.gz&quot;</span> &amp;&amp;</span><br><span class="line">  tar zxvf krew.tar.gz &amp;&amp;</span><br><span class="line">  KREW=./krew-<span class="string">&quot;<span class="subst">$(uname | tr &#x27;[:upper:]&#x27; &#x27;[:lower:]&#x27;)</span>_<span class="subst">$(uname -m | sed -e &#x27;s/x86_64/amd64/&#x27; -e &#x27;s/arm.*$/arm/&#x27;)</span>&quot;</span> &amp;&amp;</span><br><span class="line">  <span class="string">&quot;<span class="variable">$KREW</span>&quot;</span> install krew</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>完成安装后运行命令</p>
+<p><code>kubectl krew</code></p>
+<p>我喜欢将shell命名alias为简短的缩写</p>
+<p><code>alias kk=&quot;kubectl krew&quot;</code></p>
+<p>下载安装ksniff插件</p>
+<p><code>kk install sniff</code></p>
+<p>下载安装<a target="_blank" rel="noopener" href="https://www.wireshark.org/download.html">WireShark</a></p>
+<p>使用sniff抓包</p>
+<p><code>kk sniff &lt;pod&gt; -n &lt;namespace&gt;</code></p>
+<p>他会自动打开wire shark界面</p>
+<p><img src="https://tva1.sinaimg.cn/large/007S8ZIlgy1gjxcld5j6vj31e20u04bq.jpg" alt="image-20201021225650012"></p>
+<p>一件抓包调试不是梦</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Taylor</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://taylorhere.github.io/2020/10/21/%E4%B8%80%E4%B8%AA%E5%BF%AB%E9%80%9F%E7%9A%84%E5%8A%9E%E6%B3%95%E5%AF%B9kubernetes%E9%9B%86%E7%BE%A4%E4%B8%AD%E7%9A%84Pod%E8%BF%9B%E8%A1%8C%E6%8A%93%E5%8C%85%E5%88%86%E6%9E%90/">https://taylorhere.github.io/2020/10/21/%E4%B8%80%E4%B8%AA%E5%BF%AB%E9%80%9F%E7%9A%84%E5%8A%9E%E6%B3%95%E5%AF%B9kubernetes%E9%9B%86%E7%BE%A4%E4%B8%AD%E7%9A%84Pod%E8%BF%9B%E8%A1%8C%E6%8A%93%E5%8C%85%E5%88%86%E6%9E%90/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a target="_blank" rel="noopener" href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/2021/01/19/GraphX%20Spark/">Some Links For GraphX Spark</a>
+            
+            
+            <a class="next" rel="next" href="/2020/06/05/CLRS-solutions-codes/">CLRS-solutions-codes</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© Taylor | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
